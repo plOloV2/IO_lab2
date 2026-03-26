@@ -1,0 +1,107 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 28
+  },
+  "configurePresets": [
+    {
+      "name": "base-ninja",
+      "description": "Base configuration using Ninja generator",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}"
+    },
+    {
+      "name": "debug_gcc",
+      "displayName": "Debug GCC",
+      "description": "Debug GCC build with symbols",
+      "inherits": "base-ninja",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "gcc"
+      }
+    },
+    {
+      "name": "release_gcc_native",
+      "displayName": "Release GCC native",
+      "description": "Release GCC build with optimizations for current system",
+      "inherits": "base-ninja",
+      "cacheVariables": {
+        "USE_NATIVE_ARCH": "ON",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "gcc"
+      }
+    },
+    {
+      "name": "release_gcc_generic",
+      "displayName": "Release GCC generic",
+      "description": "Release GCC build with optimizations for generic system",
+      "inherits": "base-ninja",
+      "cacheVariables": {
+        "USE_NATIVE_ARCH": "OFF",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "gcc"
+      }
+    },
+    {
+      "name": "release_icx",
+      "displayName": "Release ICX",
+      "description": "Release ICX build with optimizations for current system",
+      "inherits": "base-ninja",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "icx"
+      }
+    },
+    {
+      "name": "cross_aarch64_clang",
+      "displayName": "Cross-compile AArch64 Linux Clang",
+      "description": "Cross-compile for AArch64 Linux using Clang (Tuned for Cortex-A76)",
+      "inherits": "base-ninja",
+      "toolchainFile": "${sourceDir}/toolchains/linux-aarch64-clang.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "USE_NATIVE_ARCH": "OFF",
+        "CMAKE_C_FLAGS": "-mcpu=cortex-a76"
+      }
+    },
+    {
+      "name": "cross_windows_gcc_static",
+      "displayName": "Cross-compile Windows GCC (Static)",
+      "description": "Cross-compile for Windows using GCC with static linking",
+      "inherits": "base-ninja",
+      "toolchainFile": "${sourceDir}/toolchains/windows-x86_64-gcc.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "USE_NATIVE_ARCH": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug_gcc",
+      "configurePreset": "debug_gcc"
+    },
+    {
+      "name": "release_gcc_native",
+      "configurePreset": "release_gcc_native"
+    },
+    {
+      "name": "release_gcc_generic",
+      "configurePreset": "release_gcc_generic"
+    },
+    {
+      "name": "release_icx",
+      "configurePreset": "release_icx"
+    },
+    {
+      "name": "cross_aarch64_clang",
+      "configurePreset": "cross_aarch64_clang"
+    },
+    {
+      "name": "cross_windows_gcc_static",
+      "configurePreset": "cross_windows_gcc_static"
+    }
+  ]
+}
