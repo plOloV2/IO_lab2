@@ -1,3 +1,5 @@
 build
 .vscode
 IO_lab2*
+*.ppm
+*.png

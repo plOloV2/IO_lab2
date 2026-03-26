@@ -64,5 +64,5 @@ if(WIN32)
         xoshiro256
     )
 else()
-    target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_C xoshiro256)
+    target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_C xoshiro256 m)
 endif()

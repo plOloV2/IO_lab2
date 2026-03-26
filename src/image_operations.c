@@ -27,7 +27,7 @@ static void skip_comments(FILE *fp){
 
 }
 
-Image_data* create_empty(uint16_t max_pixel_val, PPM_TYPE img_type, size_t width, size_t height, const char* name){
+Image_data* create_empty(uint16_t max_pixel_val, PPM_TYPE img_type, size_t width, size_t height, char* name){
 
     if(max_pixel_val == 0 || width == 0 || height == 0 || !name){
         print_error("One or more variables passed to create_empty() are incorect");
@@ -66,7 +66,7 @@ Image_data* create_empty(uint16_t max_pixel_val, PPM_TYPE img_type, size_t width
 
 }
 
-Image_data* load_image(const char* path){
+Image_data* load_image(char* path){
 
     FILE *file = fopen(path, "rb");
     if(!file){
@@ -178,7 +178,7 @@ Image_data* load_image(const char* path){
 
 }
 
-Image_data* load_image_stb(const char* path){
+Image_data* load_image_stb(char* path){
 
     int width, height, channels;
     
@@ -376,6 +376,8 @@ void free_image(Image_data* img){
         free(img->pixels);
     
     free(img);
+
+    img = NULL;
 
 }
 
