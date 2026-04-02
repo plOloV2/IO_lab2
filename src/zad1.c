@@ -1,4 +1,5 @@
 #include "libs.h"
+#include "tui.h"
 #include "image_operations.h"
 
 #define IMG_SIZE 1024
@@ -63,6 +64,10 @@ void zad1(){
 
     // Pierwsza część zadania, utworzenie szkicu RGB i zapis go jako .ppm
     Image_data* priv = create_empty(IMG_SIZE, TYPE_P3, IMG_SIZE, IMG_SIZE, "w1_1_p3.ppm");
+    if(!priv){
+        print_error("Image_data struct creation failed inside zad1.c");
+        return;
+    }
 
     #pragma omp parallel for collapse(2)
     for(int i = 0; i < IMG_SIZE; i++){

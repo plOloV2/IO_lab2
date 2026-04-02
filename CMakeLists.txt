@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 4.1)
 project(IO_lab2 C)
 
 set(CMAKE_C_STANDARD 23)
@@ -14,14 +14,6 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
         add_compile_options(-mtune=generic)
     endif()
 endif()
-
-include(FetchContent)
-FetchContent_Declare(
-    xoshiro256
-    GIT_REPOSITORY https://github.com/plOloV2/Xoshiro256.git
-    GIT_TAG        main
-)
-FetchContent_MakeAvailable(xoshiro256)
 
 find_package(OpenMP REQUIRED)
 
@@ -43,13 +35,13 @@ target_include_directories(${PROJECT_NAME} PRIVATE inc)
 
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pipe)
 
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    include(CheckIPOSupported)
-    check_ipo_supported(RESULT ipo_supported)
-    if(ipo_supported)
-        set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-        set_property(TARGET xoshiro256 PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-    endif()
+include(CheckIPOSupported)
+check_ipo_supported(RESULT ipo_supported OUTPUT ipo_error)
+if(ipo_supported)
+    message(STATUS "IPO/LTO is supported. Enabling for Release build.")
+    set_target_properties(${PROJECT_NAME} PROPERTIES INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+else()
+    message(WARNING "IPO/LTO is not supported: ${ipo_error}")
 endif()
 
 if(WIN32)
@@ -61,8 +53,8 @@ if(WIN32)
         -static-libgcc
         -lgomp 
         -lwinpthread 
-        xoshiro256
+        -m
     )
 else()
-    target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_C xoshiro256 m)
+    target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_C m)
 endif()
