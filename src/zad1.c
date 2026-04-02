@@ -24,7 +24,7 @@ static size_t expected_ppm_size(Image_data* img){
     if(!img)
         return 0;
 
-    // 1. Calculate the exact header size based on how save_image() formats it:
+    // 1. Calculate the exact header size based on how save_image_ppm() formats it:
     // "P3\n" or "P6\n" -> 3 bytes
     // "width height\n" -> length(width) + 1 (space) + length(height) + 1 (\n)
     // "max_val\n"      -> length(max_pixel_val) + 1 (\n)
@@ -82,12 +82,12 @@ void zad1(){
     }
 
     all_sizes[0] = expected_ppm_size(priv);
-    save_image(priv);
+    save_image_ppm(priv);
 
     convert_P3_P6(priv);
     strcpy(priv->name, "w1_1_p6.ppm");
     all_sizes[1] = expected_ppm_size(priv);
-    save_image(priv);
+    save_image_ppm(priv);
 
     free_image(priv);
 
@@ -110,12 +110,12 @@ void zad1(){
     convert_P3_P6(priv);
     strcpy(priv->name, "w1_3_p6.ppm");
     all_sizes[2] = expected_ppm_size(priv);
-    save_image(priv);
+    save_image_ppm(priv);
 
     convert_P6_P3(priv);
     strcpy(priv->name, "w1_3_p3.ppm");
     all_sizes[3] = expected_ppm_size(priv);
-    save_image(priv);
+    save_image_ppm(priv);
     free_image(priv);
 
 

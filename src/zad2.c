@@ -2,12 +2,12 @@
 #include "tui.h"
 #include "image_operations.h"
 
-#define IMG_PIXEL_SPACE 256
+#define IMG_PIXEL_SPACE 255
 #define IMG_HEIGHT 100
 
 void zad2(){
 
-    Image_data* priv = create_empty(IMG_PIXEL_SPACE - 1, TYPE_P6, IMG_PIXEL_SPACE * 7, IMG_HEIGHT, "w2_p6.ppm");
+    Image_data* priv = create_empty(IMG_PIXEL_SPACE, TYPE_P6, (IMG_PIXEL_SPACE + 1) * 7, IMG_HEIGHT, "w2.ppm");
     if(!priv){
         print_error("Image_data struct creation failed inside zad2.c");
         return;
@@ -17,8 +17,8 @@ void zad2(){
     for(int i = 0; i < IMG_HEIGHT; i++){
         for(int j = 0; j < priv->width; j++){
 
-            int segment = j / IMG_PIXEL_SPACE;
-            int fraction = j % IMG_PIXEL_SPACE;
+            int segment = j / (IMG_PIXEL_SPACE + 1);
+            int fraction = j % (IMG_PIXEL_SPACE + 1);
 
             switch(segment){
                 case 0: // 1. Black to Blue
@@ -56,7 +56,7 @@ void zad2(){
                     priv->pixels[i * priv->width + j].G = fraction;
                     priv->pixels[i * priv->width + j].B = IMG_PIXEL_SPACE;
                     break;
-                case 7: // Exactly White (when step == 1785)
+                case 7: // Exactly White
                     priv->pixels[i * priv->width + j].R = IMG_PIXEL_SPACE;
                     priv->pixels[i * priv->width + j].G = IMG_PIXEL_SPACE;
                     priv->pixels[i * priv->width + j].B = IMG_PIXEL_SPACE;
@@ -67,7 +67,7 @@ void zad2(){
 
     }
 
-    save_image(priv);
+    save_image_ppm(priv);
     free_image(priv);
 
 }

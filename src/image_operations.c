@@ -1,6 +1,7 @@
 #include "libs.h"
 #include "tui.h"
 #include "img_struct.h"
+#include <zlib.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -206,7 +207,7 @@ Image_data* load_image_stb(char* path){
     return img;
 }
 
-void save_image(Image_data* img){
+void save_image_ppm(Image_data* img){
 
     if(!img || !img->name){
         print_error("Image or image.name is missing (null pointer)");
@@ -284,20 +285,40 @@ void save_image(Image_data* img){
 
 }
 
+void save_image_png(Image_data* img){
+
+    if(!img || !img->name){
+        print_error("Invalid image or output path provided to save_image_png.");
+        return;
+    }
+
+    FILE *file = fopen(img->name, "wb");
+    if(!file){
+        print_error("Failed to create file");
+        return;
+    }
+
+    
+    
+    fclose(file);
+
+}
+
 void save_image_stb(Image_data* img){
-    if (!img || !img->name) {
+
+    if(!img || !img->name){
         print_error("Invalid image or output path provided to save_image_stb.");
         return;
     }
 
     uint8_t *raw_pixels = malloc(img->pixel_num * 3);
-    if (!raw_pixels) {
+    if(!raw_pixels){
         print_error("Failed to allocate raw_pixels array for STB saving.");
         return;
     }
 
     #pragma omp parallel for
-    for (size_t i = 0; i < img->pixel_num; i++) {
+    for(size_t i = 0; i < img->pixel_num; i++){
         raw_pixels[i * 3 + 0] = (uint8_t)(((uint32_t)img->pixels[i].R * 255) / img->max_pixel_val);
         raw_pixels[i * 3 + 1] = (uint8_t)(((uint32_t)img->pixels[i].G * 255) / img->max_pixel_val);
         raw_pixels[i * 3 + 2] = (uint8_t)(((uint32_t)img->pixels[i].B * 255) / img->max_pixel_val);
