@@ -15,7 +15,7 @@ void zad2(){
 
     #pragma omp parallel for collapse(2) 
     for(int i = 0; i < IMG_HEIGHT; i++){
-        for(int j = 0; j < priv->width; j++){
+        for(size_t j = 0; j < priv->width; j++){
 
             int segment = j / (IMG_PIXEL_SPACE + 1);
             int fraction = j % (IMG_PIXEL_SPACE + 1);

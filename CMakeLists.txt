@@ -18,12 +18,15 @@ endif()
 find_package(OpenMP REQUIRED)
 
 add_executable(${PROJECT_NAME}
+    src/image_operations/load_image.c
+    src/image_operations/save_image.c
+    src/image_operations/processing_image.c
+    src/image_operations/stbi_wraper.c
     src/tui.c
     src/zad1.c
     src/zad2.c
     src/zad3.c
     src/zad4.c
-    src/image_operations.c
     src/main.c
 )
 
@@ -54,7 +57,8 @@ if(WIN32)
         -lgomp 
         -lwinpthread 
         -m
+        -z
     )
 else()
-    target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_C m)
+    target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_C m z)
 endif()
