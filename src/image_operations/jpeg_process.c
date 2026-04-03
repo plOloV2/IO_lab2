@@ -247,7 +247,7 @@ void process_jpeg_pipeline(Image_data* input, int subsample_factor){
         goto cleanup;
     }
 
-    printf("\tRozmiar nieskompresowany (z paddingiem): %lu bajtow\n", total_zz_size);
+    printf("\tRozmiar nieskompresowany (z paddingiem): %zu bajtow\n", total_zz_size);
     printf("\tRozmiar po kompresji ZLIB (Krok 8):      %lu bajtow\n", comp_size);
 
     // =================== DEKOMPRESJA =================

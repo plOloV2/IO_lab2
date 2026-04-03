@@ -57,8 +57,8 @@ if(WIN32)
         -static-libgcc
         -lgomp 
         -lwinpthread 
-        -m
-        -z
+        -lm
+        -lz
     )
 else()
     target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_C m z)
