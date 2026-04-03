@@ -10,6 +10,9 @@ int main(){
     zad3();
     zad4();
 
+    printf("Nacisniej ENTER aby wyjsc...");
+    getchar();
+
     return 0;
 
 }
