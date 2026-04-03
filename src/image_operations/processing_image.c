@@ -2,8 +2,10 @@
 #include "tui.h"
 #include "img_struct.h"
 
+// Deklaracja funkcji pomicniczej 
 Image_data* create_empty(uint16_t max_pixel_val, PPM_TYPE img_type, size_t width, size_t height, char* name);
 
+// Utworzenie głębokiej kopii obrazka
 Image_data* copy_image(Image_data* img, char* name){
 
     if(!img){
@@ -26,6 +28,7 @@ Image_data* copy_image(Image_data* img, char* name){
 
 }
 
+// Zwolnienie obrazka z pamięci
 void free_image(Image_data* img){
 
     if(!img){
@@ -45,6 +48,7 @@ void free_image(Image_data* img){
 
 }
 
+// Zmiana typu kodowania .ppm na P6
 void convert_P3_P6(Image_data* img){
 
     if(img)
@@ -52,6 +56,7 @@ void convert_P3_P6(Image_data* img){
     
 }
 
+// Zmiana typu kodowania .ppm na P6
 void convert_P6_P3(Image_data* img){
 
     if(img)
@@ -59,6 +64,7 @@ void convert_P6_P3(Image_data* img){
 
 }
 
+// Zmiana maksymalnej wartości pikseli i przeskalowanie obecnych pikseli do niej
 void change_pixel_max_val(Image_data* img, uint16_t new_value){
 
     if(new_value == img->max_pixel_val)

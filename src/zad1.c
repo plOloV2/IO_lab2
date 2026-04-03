@@ -20,40 +20,37 @@ static size_t get_length(size_t var){
 
 }
 
-// oblicza spodziewany rozmiar pliku .ppm
+// Oblicza spodziewany rozmiar pliku .ppm
 static size_t expected_ppm_size(Image_data* img){
     
     if(!img)
         return 0;
 
-    // 1. Calculate the exact header size based on how save_image_ppm() formats it:
-    // "P3\n" or "P6\n" -> 3 bytes
-    // "width height\n" -> length(width) + 1 (space) + length(height) + 1 (\n)
-    // "max_val\n"      -> length(max_pixel_val) + 1 (\n)
+    // 1. Wyznacza długość nagłówka:
+    // "P3\n" lub "P6\n" -> 3 bajty
+    // "width height\n" -> długość(width) + 1(spacja) + długość(height) + 1(\n)
+    // "max_val\n"      -> długość(max_pixel_val) + 1(\n)
     size_t header_size = 3 + get_length(img->width) + 1 + get_length(img->height) + 1 + get_length(img->max_pixel_val) + 1;
 
     size_t data_size = 0;
 
-    // 2. Calculate pixel data size based on the image type
+    // 2. Wyznacza wielkość danych w zależności od rodzaju kodowania 
     if(img->img_type == TYPE_P6){
         
-        // P6 is binary data, so the size is EXACT.
-        if (img->max_pixel_val <= 255) {
-            data_size = img->pixel_num * 3; // 1 byte per R, G, B channel
-        } else {
-            data_size = img->pixel_num * 6; // 2 bytes per R, G, B channel
+        // Zliczenie ilości bajtów
+        if(img->max_pixel_val <= 255){
+            data_size = img->pixel_num * 3;
+        }else {
+            data_size = img->pixel_num * 6;
         }
 
     }else if(img->img_type == TYPE_P3){
         
-        // P3 is ASCII data, so we calculate the MAXIMUM possible size.
+        // Całkowita długość -> (długość(maks_wartość_pixela) + 1(spacja)) * 3(ilość kanałów RGB) * ilość_pixeli + znak nowej lini na końcu linijki(\n)
         size_t max_chars_per_val = get_length(img->max_pixel_val);
-        
-        // 3 colors per pixel. Each color is up to `max_chars_per_val` characters + 1 space character
-        size_t max_chars_per_pixel = (max_chars_per_val + 1) * 3; 
-        
-        // Total pixels + 1 newline character for each row (img->height)
-        data_size = (max_chars_per_pixel * img->pixel_num) + img->height; 
+        size_t max_chars_per_pixel = (max_chars_per_val + 1) * 3;
+        data_size = (max_chars_per_pixel * img->pixel_num) + img->height;
+
     }
 
     return header_size + data_size;

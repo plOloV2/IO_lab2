@@ -8,8 +8,10 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
+// Deklaracja funkcji pomocniczej
 Image_data* create_empty(uint16_t max_pixel_val, PPM_TYPE img_type, size_t width, size_t height, char* name);
 
+// Wczytanie z pliku za pomocą biblioteki stb_image
 Image_data* load_image_stb(char* path){
 
     int width, height, channels;
@@ -38,19 +40,21 @@ Image_data* load_image_stb(char* path){
     return img;
 }
 
+// Zapisanie obrazu za pomocą biblioteki stb_image
 void save_image_stb(Image_data* img){
 
     if(!img || !img->name){
-        print_error("Invalid image or output path provided to save_image_stb.");
+        print_error("Podano niepoprawna strukture Image_data albo brakuje w niej sciezki (nazwa pliku)");
         return;
     }
 
     uint8_t *raw_pixels = malloc(img->pixel_num * 3);
     if(!raw_pixels){
-        print_error("Failed to allocate raw_pixels array for STB saving.");
+        print_error("Nieudalo sie zaalokowac tablicy pikseli dla stb_image");
         return;
     }
 
+    // Skalowanie pikseli do max_val = 255
     #pragma omp parallel for
     for(size_t i = 0; i < img->pixel_num; i++){
         raw_pixels[i * 3 + 0] = (uint8_t)(((uint32_t)img->pixels[i].R * 255) / img->max_pixel_val);
@@ -58,18 +62,18 @@ void save_image_stb(Image_data* img){
         raw_pixels[i * 3 + 2] = (uint8_t)(((uint32_t)img->pixels[i].B * 255) / img->max_pixel_val);
     }
 
+    // Wyznaczenie rozszerzenia pliku i wykorzystanie odpowiedniego zapisu
     const char *ext = strrchr(img->name, '.');
     int success = 0;
     
     if(ext){
         if(strcmp(ext, ".png") == 0){
 
-            // width * 3 is the 'stride' (bytes per row)
             success = stbi_write_png(img->name, img->width, img->height, 3, raw_pixels, img->width * 3);
 
         }else if(strcmp(ext, ".jpg") == 0 || strcmp(ext, ".jpeg") == 0){
 
-            // 90 represents the JPEG quality (1-100)
+            // Wykorzystuje ustawienie jakości = 90
             success = stbi_write_jpg(img->name, img->width, img->height, 3, raw_pixels, 90);
 
 

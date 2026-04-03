@@ -3,6 +3,7 @@
 #include "img_struct.h"
 #include <zlib.h>
 
+// Zapisanie obrazka w formacie .ppm
 void save_image_ppm(Image_data* img){
 
     if(!img || !img->name){
@@ -16,10 +17,12 @@ void save_image_ppm(Image_data* img){
         return;
     }
 
+    // Zapisanie nagłówka
     fprintf(file, "%s\n", img->img_type == TYPE_P3 ? "P3" : "P6");
     fprintf(file, "%zu %zu\n", img->width, img->height);
     fprintf(file, "%u\n", img->max_pixel_val);
 
+    // Zapis danych pikseli
     if(img->img_type == TYPE_P3){
         for(size_t i = 0; i < img->pixel_num; i++){
 
@@ -81,6 +84,7 @@ void save_image_ppm(Image_data* img){
 
 }
 
+// Funkcja pomocnicza: zapis 32bitów do pliku w notacji Big endian
 static void write_uint32(FILE *file, uint32_t val){
 
     uint8_t bytes[4] = {
@@ -94,6 +98,7 @@ static void write_uint32(FILE *file, uint32_t val){
 
 }
 
+// Funkcja pomocnicza: zapis kawałka danych
 static void write_chunk(FILE *file, const char *type, const uint8_t *data, uint32_t len){
 
     write_uint32(file, len);
@@ -112,23 +117,25 @@ static void write_chunk(FILE *file, const char *type, const uint8_t *data, uint3
 
 }
 
+// Zapis obrazu w formacie .png
 void save_image_png(Image_data* img){
 
     if(!img || !img->name){
-        print_error("Invalid image or output path provided to save_image_png.");
+        print_error("Podano niepoprawna strukture Image_data albo brakuje w niej sciezki (nazwa pliku)");
         return;
     }
 
     FILE *file = fopen(img->name, "wb");
     if(!file){
-        print_error("Failed to create file");
+        print_error("Nieudalo sie utworzyc pliku");
         return;
     }
 
-
+    // Zapisanie ciągu bitów oznaczającego plik PNG
     const uint8_t png_sig[8] = {0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a};
     fwrite(png_sig, sizeof(uint8_t), 8, file);
 
+    // Utworzenie i zapis nagłówka IHDR
     uint8_t ihdr_data[13];
     ihdr_data[0] = (img->width >> 24) & 0xFF; ihdr_data[1] = (img->width >> 16) & 0xFF;
     ihdr_data[2] = (img->width >> 8) & 0xFF;  ihdr_data[3] = img->width & 0xFF;
@@ -144,6 +151,7 @@ void save_image_png(Image_data* img){
     
     write_chunk(file, "IHDR", ihdr_data, 13);
 
+    // Przeniesienie danych pikseli do osobnego buffora (skalowanie do max wartości = 255)
     size_t row_bytes = img->width * 3;
     size_t raw_size = img->height * (row_bytes + 1);
     uint8_t *raw_data = malloc(raw_size);
@@ -165,6 +173,7 @@ void save_image_png(Image_data* img){
 
     }
 
+    // Kompresja z wykorzsytaniem zlib oraz zapis IDAT
     uLongf compressed_size = compressBound(raw_size);
     uint8_t *compressed_data = malloc(compressed_size);
     
@@ -174,6 +183,7 @@ void save_image_png(Image_data* img){
         print_error("Zlib compression failed!");
     }
 
+    // Wpisanie końca pliku IEND 
     write_chunk(file, "IEND", NULL, 0);
 
     free(raw_data);

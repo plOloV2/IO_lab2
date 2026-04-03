@@ -15,6 +15,7 @@ void zad2(){
         return;
     }
 
+    // Wyznaczenie wartości RGB każdego pixela
     #pragma omp parallel for collapse(2) 
     for(int i = 0; i < IMG_HEIGHT; i++){
         for(size_t j = 0; j < priv->width; j++){
@@ -23,42 +24,42 @@ void zad2(){
             int fraction = j % (IMG_PIXEL_SPACE + 1);
 
             switch(segment){
-                case 0: // 1. Black to Blue
+                case 0: // 1. Czarny do Niebieskiego
                     priv->pixels[i * priv->width + j].R = 0;
                     priv->pixels[i * priv->width + j].G = 0;
                     priv->pixels[i * priv->width + j].B = fraction;
                     break;
-                case 1: // 2. Blue to Cyan
+                case 1: // 2. Niebieski do Cyjanowego
                     priv->pixels[i * priv->width + j].R = 0;
                     priv->pixels[i * priv->width + j].G = fraction;
                     priv->pixels[i * priv->width + j].B = IMG_PIXEL_SPACE;
                     break;
-                case 2: // 3. Cyan to Green
+                case 2: // 3. Cyjanowy do Zielonego
                     priv->pixels[i * priv->width + j].R = 0;
                     priv->pixels[i * priv->width + j].G = IMG_PIXEL_SPACE;
                     priv->pixels[i * priv->width + j].B = IMG_PIXEL_SPACE - fraction;
                     break;
-                case 3: // 4. Green to Yellow
+                case 3: // 4. Zielony do żółtego
                     priv->pixels[i * priv->width + j].R = fraction;
                     priv->pixels[i * priv->width + j].G = IMG_PIXEL_SPACE;
                     priv->pixels[i * priv->width + j].B = 0;
                     break;
-                case 4: // 5. Yellow to Red
+                case 4: // 5. Żółty do Czerwonego
                     priv->pixels[i * priv->width + j].R = IMG_PIXEL_SPACE;
                     priv->pixels[i * priv->width + j].G = IMG_PIXEL_SPACE - fraction;
                     priv->pixels[i * priv->width + j].B = 0;
                     break;
-                case 5: // 6. Red to Magenta
+                case 5: // 6. Czerwony do Magenty
                     priv->pixels[i * priv->width + j].R = IMG_PIXEL_SPACE;
                     priv->pixels[i * priv->width + j].G = 0;
                     priv->pixels[i * priv->width + j].B = fraction;
                     break;
-                case 6: // 7. Magenta to White
+                case 6: // 7. Magenta do Białego
                     priv->pixels[i * priv->width + j].R = IMG_PIXEL_SPACE;
                     priv->pixels[i * priv->width + j].G = fraction;
                     priv->pixels[i * priv->width + j].B = IMG_PIXEL_SPACE;
                     break;
-                case 7: // Exactly White
+                case 7: // Idealnie Biały na koniec
                     priv->pixels[i * priv->width + j].R = IMG_PIXEL_SPACE;
                     priv->pixels[i * priv->width + j].G = IMG_PIXEL_SPACE;
                     priv->pixels[i * priv->width + j].B = IMG_PIXEL_SPACE;

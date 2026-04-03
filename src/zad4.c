@@ -19,6 +19,6 @@ void zad4(){
 
     free_image(input);
 
-    printf("Zadanie 4 wykonane.\n");
+    printf("\nZadanie 4 wykonane.\n");
 
 }

@@ -3,6 +3,7 @@
 #include "img_struct.h"
 #include <zlib.h>
 
+// Deklaracje funkcji pomocniczych z innych plików
 void save_image_ppm(Image_data* img);
 void free_image(Image_data* img);
 Image_data* create_empty(uint16_t max_pixel_val, PPM_TYPE img_type, size_t width, size_t height, char* name);
@@ -34,6 +35,7 @@ static const int ZZ[64][2] = {
     {5,6}, {4,7}, {5,7}, {6,6}, {7,5}, {7,6}, {6,7}, {7,7}
 };
 
+// Funkcja pomocnicza: ograniczenie wartości float do uint8_t (8 bitów) 
 static uint8_t clamp(float value){
 
     if(value < 0.0f)
@@ -98,7 +100,7 @@ uint8_t* upsample(uint8_t* src, int src_w, int src_h, int factor){
 
 }
 
-// Kroki 3 i 7 z wyliczaniem absolutnym dla OpenMP
+// Implemantacja algorytmu ZigZag
 void apply_zigzag(uint8_t* src, int w, int h, uint8_t* dst){
 
     if(!src || !dst)
@@ -129,7 +131,7 @@ void apply_zigzag(uint8_t* src, int w, int h, uint8_t* dst){
 
 }
 
-// Odwrotność kroków 3 i 7 z wyliczaniem absolutnym dla OpenMP
+// Odwrócenie ZigZag
 void inverse_zigzag(uint8_t* src, int w, int h, uint8_t* dst){
 
     if(!src || !dst)
@@ -158,14 +160,14 @@ void inverse_zigzag(uint8_t* src, int w, int h, uint8_t* dst){
 
 }
 
-// Główna funkcja procesująca - z bezpiecznym modelem czyszczenia pamięci
+// Główna funkcja procesująca JPEG
 void process_jpeg_pipeline(Image_data* input, int subsample_factor){
     printf("\n\t--- Test algorytmu ze wspolczynnikiem probkowania: %d ---\n", subsample_factor);
 
     size_t w = (input->width + 31) & ~31;
     size_t h = (input->height + 31) & ~31;
 
-    // 1. Inicjalizacja wszystkich wskaźników na NULL (dla bezpiecznego goto cleanup)
+    // 1. Inicjalizacja wszystkich wskaźników na NULL
     uint8_t *Y = NULL, *Cb = NULL, *Cr = NULL;
     uint8_t *Cb_sub = NULL, *Cr_sub = NULL;
     uint8_t *Y_zz = NULL, *Cb_zz = NULL, *Cr_zz = NULL;
@@ -174,7 +176,6 @@ void process_jpeg_pipeline(Image_data* input, int subsample_factor){
     uint8_t *Cb_dec = NULL, *Cr_dec = NULL;
     Image_data *out = NULL;
 
-    // --- ALOKACJE ---
     Y = malloc(w * h);
     Cb = malloc(w * h);
     Cr = malloc(w * h);
