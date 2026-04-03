@@ -26,4 +26,6 @@ void convert_P6_P3(Image_data* img);
 
 void change_pixel_max_val(Image_data* img, uint16_t new_value);
 
+void process_jpeg_pipeline(Image_data* input, int subsample_factor);
+
 #endif

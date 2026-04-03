@@ -112,16 +112,12 @@ static void write_chunk(FILE *file, const char *type, const uint8_t *data, uint3
 
 }
 
-void change_pixel_max_val(Image_data* img, uint16_t new_value);
-
 void save_image_png(Image_data* img){
 
     if(!img || !img->name){
         print_error("Invalid image or output path provided to save_image_png.");
         return;
     }
-
-
 
     FILE *file = fopen(img->name, "wb");
     if(!file){

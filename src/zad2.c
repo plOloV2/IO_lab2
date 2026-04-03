@@ -7,9 +7,11 @@
 
 void zad2(){
 
+    printf("\nRozpoczynam wykonywac zadanie 2.\n");
+
     Image_data* priv = create_empty(IMG_PIXEL_SPACE, TYPE_P6, (IMG_PIXEL_SPACE + 1) * 7, IMG_HEIGHT, "w2.ppm");
     if(!priv){
-        print_error("Image_data struct creation failed inside zad2.c");
+        print_error("Nie udalo sie utworzyc Image_data struct wewnatrz zad2.c");
         return;
     }
 
@@ -69,5 +71,7 @@ void zad2(){
 
     save_image_ppm(priv);
     free_image(priv);
+
+    printf("Zadanie 2 wykonane.\n");
 
 }

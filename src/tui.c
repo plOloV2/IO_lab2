@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include "ansi_terminal.h"
 
-void print_error(const char* erro_msg){
+void print_error([[maybe_unused]] const char* erro_msg){
 
-    fprintf(stderr, ANSI_COLOR_RED ANSI_STYLE_BOLD "ERROR: %s\n", erro_msg);
+    #ifndef NDEBUG
+        fprintf(stderr, ANSI_COLOR_RED ANSI_STYLE_BOLD "ERROR: %s\n", erro_msg);
+    #endif
 
 }
 

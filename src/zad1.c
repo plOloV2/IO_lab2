@@ -4,6 +4,7 @@
 
 #define IMG_SIZE 1024
 
+// Wyznacza ilosc znakow potrzebnych do zapisania liczby w systemie dziesietnym
 static size_t get_length(size_t var){
     
     if(var == 0)
@@ -19,6 +20,7 @@ static size_t get_length(size_t var){
 
 }
 
+// oblicza spodziewany rozmiar pliku .ppm
 static size_t expected_ppm_size(Image_data* img){
     
     if(!img)
@@ -60,12 +62,14 @@ static size_t expected_ppm_size(Image_data* img){
 
 void zad1(){
 
+    printf("Rozpoczynam wykonywac zadanie 1.\n");
+
     size_t all_sizes[4] = {0, 0, 0, 0};
 
     // Pierwsza część zadania, utworzenie szkicu RGB i zapis go jako .ppm
     Image_data* priv = create_empty(IMG_SIZE, TYPE_P3, IMG_SIZE, IMG_SIZE, "w1_1_p3.ppm");
     if(!priv){
-        print_error("Image_data struct creation failed inside zad1.c");
+        print_error("Nie udalo sie utworzyc Image_data struct wewnatrz zad1.c");
         return;
     }
 
@@ -118,7 +122,7 @@ void zad1(){
     save_image_ppm(priv);
     free_image(priv);
 
-
-    printf("\nExpected sizes (in bytes) for each .ppm photo:\n1. w1_1_p3.ppm -> %zu\n2. w1_1_p6.ppm -> %zu\n3. w1_2_p3.ppm -> %zu\n4. w1_2_p6.ppm -> %zu\n", all_sizes[0], all_sizes[1], all_sizes[3], all_sizes[2]);
+    // Wypisanie spodziewanych rozmiarów plików .ppm
+    printf("\n\tExpected sizes (in bytes) for each .ppm photo:\n\t1. w1_1_p3.ppm -> %zu\n\t2. w1_1_p6.ppm -> %zu\n\t3. w1_2_p3.ppm -> %zu\n\t4. w1_2_p6.ppm -> %zu\n\nZadanie 1 wykonane.\n", all_sizes[0], all_sizes[1], all_sizes[3], all_sizes[2]);
 
 }

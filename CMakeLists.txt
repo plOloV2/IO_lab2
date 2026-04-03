@@ -22,6 +22,7 @@ add_executable(${PROJECT_NAME}
     src/image_operations/save_image.c
     src/image_operations/processing_image.c
     src/image_operations/stbi_wraper.c
+    src/image_operations/jpeg_process.c
     src/tui.c
     src/zad1.c
     src/zad2.c
