@@ -7,13 +7,13 @@
 void save_image_ppm(Image_data* img){
 
     if(!img || !img->name){
-        print_error("Image or image.name is missing (null pointer)");
+        print_error("Podano niepoprawna strukture Image_data albo brakuje w niej sciezki (nazwa pliku)");
         return;
     }
 
     FILE *file = fopen(img->name, "wb");
     if(!file){
-        print_error("Failed to create file");
+        print_error("Nieudalo sie utworzyc pliku");
         return;
     }
 
@@ -38,7 +38,7 @@ void save_image_ppm(Image_data* img){
 
             uint8_t *raw_pixels = malloc(img->pixel_num * 3);
             if(!raw_pixels){
-                print_error("Raw_pixels array alloc failed");
+                print_error("Alokacja tablicy Raw_pixels niepowiodla sie");
                 fclose(file);
                 return;
             }
@@ -56,7 +56,7 @@ void save_image_ppm(Image_data* img){
 
             uint8_t *raw_pixels = malloc(img->pixel_num * 3 * 2);
             if(!raw_pixels){
-                print_error("Raw_pixels array alloc failed");
+                print_error("Alokacja tablicy Raw_pixels niepowiodla sie");
                 fclose(file);
                 return;
             }

@@ -120,6 +120,6 @@ void zad1(){
     free_image(priv);
 
     // Wypisanie spodziewanych rozmiarów plików .ppm
-    printf("\n\tExpected sizes (in bytes) for each .ppm photo:\n\t1. w1_1_p3.ppm -> %zu\n\t2. w1_1_p6.ppm -> %zu\n\t3. w1_2_p3.ppm -> %zu\n\t4. w1_2_p6.ppm -> %zu\n\nZadanie 1 wykonane.\n", all_sizes[0], all_sizes[1], all_sizes[3], all_sizes[2]);
+    printf("\n\tSpodziewany rozmiar w bajtach każdego obrazka.ppm:\n\t1. w1_1_p3.ppm -> %zu\n\t2. w1_1_p6.ppm -> %zu\n\t3. w1_2_p3.ppm -> %zu\n\t4. w1_2_p6.ppm -> %zu\n\nZadanie 1 wykonane.\n", all_sizes[0], all_sizes[1], all_sizes[3], all_sizes[2]);
 
 }
