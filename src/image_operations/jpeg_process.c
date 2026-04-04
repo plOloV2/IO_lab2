@@ -4,7 +4,7 @@
 #include <zlib.h>
 
 // Deklaracje funkcji pomocniczych z innych plików
-void save_image_ppm(Image_data* img);
+void save_image_png(Image_data* img);
 void free_image(Image_data* img);
 Image_data* create_empty(uint16_t max_pixel_val, PPM_TYPE img_type, size_t width, size_t height, char* name);
 
@@ -286,7 +286,7 @@ void process_jpeg_pipeline(Image_data* input, int subsample_factor){
 
     // Odwrotność 1: Konwersja YCbCr -> RGB
     char out_name[32];
-    sprintf(out_name, "w4_test_factor_%d.ppm", subsample_factor);
+    sprintf(out_name, "w4_test_factor_%d.png", subsample_factor);
     out = create_empty(input->max_pixel_val, TYPE_P6, input->width, input->height, out_name);
     if(!out){
         print_error("Nie udalo sie utworzyc wynikowego Image_data struct");
@@ -313,7 +313,7 @@ void process_jpeg_pipeline(Image_data* input, int subsample_factor){
 
     }
 
-    save_image_ppm(out);
+    save_image_png(out);
 
 cleanup:
     // Czyszczenie pamięci

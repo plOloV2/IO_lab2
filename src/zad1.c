@@ -2,7 +2,7 @@
 #include "tui.h"
 #include "image_operations.h"
 
-#define IMG_SIZE 1024
+#define IMG_SIZE 255
 
 // Wyznacza ilosc znakow potrzebnych do zapisania liczby w systemie dziesietnym
 static size_t get_length(size_t var){
